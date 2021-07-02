@@ -2,12 +2,23 @@
   "name": "Basic-LDES-Server",
   "version": "0.0.1",
   "dependencies": {
+    "express": "^4.17.1",
     "typescript": "^4.0.5"
   },
   "main": "dist/index.js",
   "scripts": {
+    "start": "yarn run build && node ./bin/server.js",
     "clean": "rm -rf dist",
     "build": "yarn run clean && tsc",
     "publish": "yarn run build && npm publish"
+  },
+  "devDependencies": {
+    "@dexagod/rdf-retrieval": "^1.0.2",
+    "@rdfjs/data-model": "^1.3.2",
+    "@types/node": "^15.14.0",
+    "@types/yargs": "^17.0.0",
+    "rdf-serialize": "^1.1.0",
+    "streamify-array": "^1.0.1",
+    "yargs": "^17.0.1"
   }
 }
