@@ -6,7 +6,7 @@ export abstract class Source implements ISource {
     getStreamIfExists() :Readable|boolean {
         return false;
     }
-    getPage(id: any): Promise<Page> {
+    getPage(id: any): Promise<Page>|Page {
         throw new Error('Method not implemented.');
     }
     importPages(pages: Page[]): void {
