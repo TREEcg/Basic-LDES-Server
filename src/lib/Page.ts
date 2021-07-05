@@ -11,7 +11,7 @@ export class Page implements IPage {
     private triples: RDF.Quad[];
     private metadata: RDF.Quad[];
 
-    constructor(triples, metadata) {
+    constructor(triples: RDF.Quad[], metadata: RDF.Quad[]) {
         this.triples = triples;
         this.metadata = metadata;
     }
