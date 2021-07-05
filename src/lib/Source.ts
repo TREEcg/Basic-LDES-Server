@@ -1,8 +1,9 @@
 import type { ISource } from '../util/Util';
 import {Page} from "./Page";
+import { Readable } from 'stream';
 
 export abstract class Source implements ISource {
-    getStreamIfExists() {
+    getStreamIfExists() :Readable|boolean {
         return false;
     }
     getPage(id: any): Promise<Page> {
