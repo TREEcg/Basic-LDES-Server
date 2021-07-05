@@ -24,7 +24,7 @@ export class Page implements IPage {
     }
 
     async getSerializedPage(contentType: string = "text/turtle"):  Promise<NodeJS.ReadableStream> {
-        const tripleStream = await f.quadArrayToQuadStream(this.getTriples());
+        const tripleStream : RDF.Stream<RDF.Quad> = await f.quadArrayToQuadStream(this.getTriples());
         //const metadataStream = streamifyArray(this.getMetadata());
         //const stream = tripleStream.concat(metadataStream);
 

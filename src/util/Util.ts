@@ -4,7 +4,7 @@ import type * as RDF from 'rdf-js';
 
 export interface ISource {
     getStreamIfExists(): Readable | boolean;
-    getPage(id: any): Page;
+    getPage(id: any): Promise<Page>;
     importPages(pages: Page[]): void;
 }
 

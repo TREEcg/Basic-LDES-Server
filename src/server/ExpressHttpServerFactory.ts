@@ -17,7 +17,7 @@ export class ExpressHttpServerFactory {
         app.set('source', source);
 
         app.use(this.decideWhichSource);
-        app.get('/', usePageOfSource);
+        app.get('/:id', usePageOfSource);
 
     }
     public start(): any {
