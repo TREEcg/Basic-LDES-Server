@@ -1,0 +1,21 @@
+{
+    "restartable": "rs",
+    "ignore": [
+        ".git",
+        "node_modules/",
+        "dist/",
+        "coverage/"
+    ],
+    "watch": [
+        "./**/*"
+    ],
+    "env": {
+        "NODE_ENV": "development"
+    },
+    "ext": "js,json,ts",
+    "events": {
+        "restart": "kill-port 3000",
+        "crash": "kill-port 3000"
+    },
+    "delay": "1000"
+}
