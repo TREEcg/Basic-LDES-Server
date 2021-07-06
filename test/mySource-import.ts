@@ -1,5 +1,5 @@
-import {Source} from "../src";
-import {Page} from "../src/lib/Page";
+import { Source } from "../src";
+import { Page } from "../src/lib/Page";
 import type * as RDF from 'rdf-js';
 import { literal, namedNode, quad } from '@rdfjs/data-model';
 
@@ -10,7 +10,7 @@ const rdfParser = require("rdf-parse").default;
 export class mySource extends Source {
     private config: object;
 
-    constructor (config: string) {
+    constructor(config: string) {
         super();
         this.parseConfig(config);
     }
@@ -53,13 +53,12 @@ export class mySource extends Source {
     }
     */
 
-    
+
     async fetchAPI(reqUrl: String) {
         return await fetch(reqUrl)
             .then(res => res.text())
-            //.then(body => console.log(body));
     }
-    
+
 
     async importPages(pages: Page[]): Promise<void> {
         let reqUrl = this.config["entrypoint"] + "?" + this.config["queryparam"] + "=" + "2021-06-28T14:26:43.196Z";
@@ -68,20 +67,9 @@ export class mySource extends Source {
         const textStream = require('streamify-string')(res);
 
         let r = await rdfParser.parse(textStream, { contentType: 'application/ld+json', baseIRI: this.config["entrypoint"] })
-            //.on('data', (quad) => console.log(quad))
-            .on('error', (error) => console.error(error))
-            //.on('end', () => console.log('All done!'));
-
+            .on('error', (error: any) => console.error(error))
 
         let triples: RDF.Quad[] = await f.quadStreamToQuadArray(r)
-
-        
-        // const test = quad(namedNode('http://example.org/A'), namedNode('http://example.org/B'), namedNode('http://example.org/C'));
-        // const testArray : RDF.Quad[] = [];
-        // testArray.push(test);
-
-        // const p = new Page(testArray, []);
-        
 
         const p = new Page(triples, []);
 
@@ -89,6 +77,5 @@ export class mySource extends Source {
 
         super.importPages(array);
     }
-    
 
 }

@@ -1,4 +1,3 @@
-//const Sequelize = require('sequelize');
 import { Sequelize, DataTypes } from 'sequelize';
 const db = require('../config/database')
 
@@ -12,13 +11,12 @@ const DatabaseModel = db.define('DatabaseModel', {
   page: {
     type: DataTypes.TEXT,
     allowNull: false
-    // allowNull defaults to true
   }
 }, {
   // Other model options go here
   timestamps: false,
 });
 
-DatabaseModel.sync({force: true});
+DatabaseModel.sync({ force: true });
 
 module.exports = DatabaseModel;
