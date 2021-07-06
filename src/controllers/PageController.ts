@@ -4,6 +4,9 @@ export async function usePageOfSource(req, res) {
     const id = req.params.id;
     const page = await source.getPage(id);
 
+    console.log(req.path)
+    
+
     const s = await page.getSerializedPage('text/turtle');
     s.pipe(res);
     //res.write(await page.getSerializedPage('text/turtle'));

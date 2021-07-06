@@ -3,7 +3,7 @@ import {Source} from "..";
 const express = require('express')
 const app = express()
 
-let source: Source;
+//let source: Source;
 
 import { usePageOfSource } from '../controllers/PageController';
 
@@ -18,10 +18,17 @@ export class ExpressHttpServerFactory {
 
         app.use(this.decideWhichSource);
         app.get('/:id', usePageOfSource);
-
     }
+
     public start(): any {
         console.log("Starting on port: "+ this.variableParams.port)
+
+        const interval = setInterval(() => {
+            this.source.importPages(null);
+        }, 5000);
+         
+        //clearInterval(interval);
+
         return app.listen(this.variableParams.port);
     }
 

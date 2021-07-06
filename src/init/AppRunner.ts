@@ -22,7 +22,7 @@ export class AppRunner {
 
     protected initializeSource(config: string): Source {
       // should be done based on the config
-        const locationOfSource = this.resolveFilePath('dist/test/mySource');
+        const locationOfSource = this.resolveFilePath('dist/test/mySource-import');
         const MySource = require(locationOfSource).mySource;
         const mySource = new MySource(config);
         return mySource;
