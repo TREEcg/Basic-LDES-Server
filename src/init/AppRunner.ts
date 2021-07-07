@@ -16,17 +16,23 @@ export class AppRunner {
     public async getApp(configFile: string, variableParams: any
     ): Promise<any> {
         const config = await fs.promises.readFile(configFile, 'utf8')
-        const source = this.initializeSource(config);
-        return this.createApp(source, variableParams);
+        const sourceMap: Map<String, Source> = this.initializeSources(config);
+        return this.createApp(sourceMap, variableParams);
     }
 
-    protected initializeSource(config: string): Source {
+    protected initializeSources(config: string): Map<String, Source> {
         // should be done based on the config
         let configuration = JSON.parse(config);
-        const locationOfSource = this.resolveFilePath(configuration['source']);
-        const MySource = require(locationOfSource).mySource;
-        const mySource = new MySource(config);
-        return mySource;
+        let sourceMap : Map<String, Source> = new Map()
+        configuration['sources'].forEach(element => {
+            let route: String = element['route'];
+            let locationOfSource = this.resolveFilePath(element['sourceFile']);
+            let MySource = require(locationOfSource).mySource;
+            let mySource: Source = new MySource(config);
+            sourceMap.set(route, mySource);
+        });
+        
+        return sourceMap;
     }
 
     /**
@@ -70,7 +76,7 @@ export class AppRunner {
             })
             .parseSync();
 
-        const configFile = this.resolveFilePath(params.config, '../config/default.json');
+        const configFile = this.resolveFilePath(params.config, '../config/config.json');
 
         // Create and execute the server initializer
         this.getApp(configFile, params)
@@ -102,9 +108,9 @@ export class AppRunner {
      * Creates the server initializer
      */
     protected async createApp(
-        source: any,
+        sourceMap: Map<String, Source>,
         variableParams: any
     ): Promise<any> {
-        return new ExpressHttpServerFactory(source, variableParams);
+        return new ExpressHttpServerFactory(sourceMap, variableParams);
     }
 }
