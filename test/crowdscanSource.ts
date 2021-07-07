@@ -97,7 +97,7 @@ export class mySource extends Source {
     metadata.push(
       quad(
         namedNode('hoeveelheid_mensen'),
-        namedNode('rdfs:label'),
+        namedNode('http://www.w3.org/2000/01/rdf-schema#label'),
         literal("hoeveelheid mensen")
       )
     );
