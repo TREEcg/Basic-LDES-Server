@@ -3,7 +3,7 @@ import { absoluteFilePath, ensureTrailingSlash, joinFilePath } from '../util/Pat
 
 import type { ReadStream, WriteStream } from 'tty';
 import yargs from 'yargs';
-import {Source} from "..";
+import { Source } from "..";
 import * as fs from 'fs';
 
 export class AppRunner {
@@ -21,8 +21,9 @@ export class AppRunner {
     }
 
     protected initializeSource(config: string): Source {
-      // should be done based on the config
-        const locationOfSource = this.resolveFilePath('dist/test/crowdscanSource');
+        // should be done based on the config
+        let configuration = JSON.parse(config);
+        const locationOfSource = this.resolveFilePath(configuration['source']);
         const MySource = require(locationOfSource).mySource;
         const mySource = new MySource(config);
         return mySource;
@@ -35,9 +36,9 @@ export class AppRunner {
      * @param stderr - Standard error stream.
      */
     public runCli({
-                      argv = process.argv,
-                      stderr = process.stderr,
-                  }: {
+        argv = process.argv,
+        stderr = process.stderr,
+    }: {
         argv?: string[];
         stdin?: ReadStream;
         stdout?: WriteStream;
@@ -74,7 +75,7 @@ export class AppRunner {
         // Create and execute the server initializer
         this.getApp(configFile, params)
             .then(
-                async(app): Promise<void> => app.start(),
+                async (app): Promise<void> => app.start(),
                 (error: Error): void => {
                     // Instantiation of components has failed, so there is no logger to use
                     stderr.write(`Error: could not instantiate server from ${configFile}\n`);
@@ -82,9 +83,9 @@ export class AppRunner {
                     process.exit(1);
                 },
             ).catch((error): void => {
-            console.error(`Could not start server: ${error}`, { error });
-            process.exit(1);
-        });
+                console.error(`Could not start server: ${error}`, { error });
+                process.exit(1);
+            });
     }
 
     /**

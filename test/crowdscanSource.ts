@@ -285,6 +285,6 @@ export class mySource extends Source {
     } catch (e) {
       console.log("er is een grote error: ", e.message);
     }
-    console.log(rdf);
+    //console.log(rdf);
   }
 }
