@@ -1,5 +1,6 @@
 import type { ISource } from '../util/Util';
 import { Page } from "./Page";
+import { Readable } from 'stream';
 
 import type * as RDF from 'rdf-js';
 import { literal, namedNode, quad } from '@rdfjs/data-model';
@@ -18,7 +19,7 @@ export abstract class Source implements ISource {
         this.databaseModel = db.createTable("testTable/abc")
     }
 
-    getStreamIfExists() {
+    getStreamIfExists(): Readable|boolean {
         return false;
     }
 

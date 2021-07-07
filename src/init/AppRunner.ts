@@ -3,7 +3,7 @@ import { absoluteFilePath, ensureTrailingSlash, joinFilePath } from '../util/Pat
 
 import type { ReadStream, WriteStream } from 'tty';
 import yargs from 'yargs';
-import {Source} from "..";
+import { Source } from "..";
 import * as fs from 'fs';
 
 export class AppRunner {
@@ -16,16 +16,23 @@ export class AppRunner {
     public async getApp(configFile: string, variableParams: any
     ): Promise<any> {
         const config = await fs.promises.readFile(configFile, 'utf8')
-        const source = this.initializeSource(config);
-        return this.createApp(source, variableParams);
+        const sourceMap: Map<String, Source> = this.initializeSources(config);
+        return this.createApp(sourceMap, variableParams);
     }
 
-    protected initializeSource(config: string): Source {
-      // should be done based on the config
-        const locationOfSource = this.resolveFilePath('dist/test/mySource-import');
-        const MySource = require(locationOfSource).mySource;
-        const mySource = new MySource(config);
-        return mySource;
+    protected initializeSources(config: string): Map<String, Source> {
+        // should be done based on the config
+        let configuration = JSON.parse(config);
+        let sourceMap : Map<String, Source> = new Map()
+        configuration['sources'].forEach(element => {
+            let route: String = element['route'];
+            let locationOfSource = this.resolveFilePath(element['sourceFile']);
+            let MySource = require(locationOfSource).mySource;
+            let mySource: Source = new MySource(config);
+            sourceMap.set(route, mySource);
+        });
+        
+        return sourceMap;
     }
 
     /**
@@ -35,9 +42,9 @@ export class AppRunner {
      * @param stderr - Standard error stream.
      */
     public runCli({
-                      argv = process.argv,
-                      stderr = process.stderr,
-                  }: {
+        argv = process.argv,
+        stderr = process.stderr,
+    }: {
         argv?: string[];
         stdin?: ReadStream;
         stdout?: WriteStream;
@@ -69,12 +76,12 @@ export class AppRunner {
             })
             .parseSync();
 
-        const configFile = this.resolveFilePath(params.config, '../config/default.json');
+        const configFile = this.resolveFilePath(params.config, '../config/config.json');
 
         // Create and execute the server initializer
         this.getApp(configFile, params)
             .then(
-                async(app): Promise<void> => app.start(),
+                async (app): Promise<void> => app.start(),
                 (error: Error): void => {
                     // Instantiation of components has failed, so there is no logger to use
                     stderr.write(`Error: could not instantiate server from ${configFile}\n`);
@@ -82,9 +89,9 @@ export class AppRunner {
                     process.exit(1);
                 },
             ).catch((error): void => {
-            console.error(`Could not start server: ${error}`, { error });
-            process.exit(1);
-        });
+                console.error(`Could not start server: ${error}`, { error });
+                process.exit(1);
+            });
     }
 
     /**
@@ -101,9 +108,9 @@ export class AppRunner {
      * Creates the server initializer
      */
     protected async createApp(
-        source: any,
+        sourceMap: Map<String, Source>,
         variableParams: any
     ): Promise<any> {
-        return new ExpressHttpServerFactory(source, variableParams);
+        return new ExpressHttpServerFactory(sourceMap, variableParams);
     }
 }

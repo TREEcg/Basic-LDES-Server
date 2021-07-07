@@ -1,0 +1,23 @@
+{
+    "app": {
+        "port": 3000
+    },
+    "db": {
+        "host": "localhost",
+        "port": 27017,
+        "name": "ydb"
+    },
+    "sources" : [
+        {
+            "route": "/telraam",
+            "sourceFile": "dist/test/mySource"
+        },
+        {
+            "route": "/crowdscan",
+            "sourceFile": "dist/test/crowdscanSource"
+        }
+    ],
+    "custom": {
+
+    }
+}
