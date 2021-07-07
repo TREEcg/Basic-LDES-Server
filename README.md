@@ -6,12 +6,13 @@ A Linked Data Event Stream (LDES) is a collection of immutable objects. The HTTP
 
 
 ## Installing and using
+###### Installing
 ```
 git clone https://github.com/TREEcg/Basic-LDES-Server.git 
 yarn install
 yarn run dev
 ```
-#####using
+###### Using
 
 ## Authors
 
