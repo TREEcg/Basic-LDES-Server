@@ -14,7 +14,7 @@ export async function usePageOfSource(req, res) {
     }
     else {
         //console.error(`The endpoint ${path} does not exist`)
-        res.status(500).send(`The endpoint ${path} does not exist`)
+        res.status(404).send(`The endpoint ${path} does not exist`)
     }
     
 }
