@@ -6,6 +6,8 @@ import yargs from 'yargs';
 import { Source } from "..";
 import * as fs from 'fs';
 
+import { DatabaseFactory } from '../models/DatabaseFactory';
+
 export class AppRunner {
     /**
      * Generic function for getting the app object to start the server from JavaScript for a given config.
@@ -24,11 +26,18 @@ export class AppRunner {
         // should be done based on the config
         let configuration = JSON.parse(config);
         let sourceMap : Map<String, Source> = new Map()
+        let db = new DatabaseFactory(configuration['db']['host']);
+
         configuration['sources'].forEach(element => {
             let route: String = element['route'];
             let locationOfSource = this.resolveFilePath(element['sourceFile']);
             let MySource = require(locationOfSource).mySource;
-            let mySource: Source = new MySource(config);
+            //let mySource: Source = new MySource(config);
+            let mySource: Source = new MySource(element);
+
+            if(element['usesImportPages'] != null && element['usesImportPages']) {
+                mySource.setDatabaseModel(db.createTable(element['route']));
+            }
             sourceMap.set(route, mySource);
         });
         
@@ -77,7 +86,7 @@ export class AppRunner {
             .parseSync();
 
         const configFile = this.resolveFilePath(params.config, '../config/config.json');
-
+    
         // Create and execute the server initializer
         this.getApp(configFile, params)
             .then(
