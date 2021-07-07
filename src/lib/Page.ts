@@ -27,8 +27,6 @@ export class Page implements IPage {
         let all:RDF.Quad[] = this.getMetadata();
         all = all.concat(this.getTriples());
         const tripleStream : RDF.Stream<RDF.Quad> = await f.quadArrayToQuadStream(all);
-        //const metadataStream = streamifyArray(this.getMetadata());
-        //const stream = tripleStream.concat(metadataStream);
 
         return rdfSerializer.serialize(tripleStream, {contentType: contentType});
     }
