@@ -8,7 +8,6 @@ import { literal, namedNode, quad } from '@rdfjs/data-model';
 export abstract class Source implements ISource {
 
     private databaseModel;
-    private useImportPages: boolean = false;
     protected config: object;
 
     constructor(config: object) {
