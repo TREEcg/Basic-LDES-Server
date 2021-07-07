@@ -7,13 +7,14 @@ import { literal, namedNode, quad } from '@rdfjs/data-model';
 
 //Source van de api van de langemunt
 export class mySource extends Source {
-  private config: object;
+  //private config: object;
 
-  constructor(config: string) {
-    super();
-    this.parseConfig(config);
+  constructor(config: object) {
+    super(config);
+    //this.parseConfig(config);
   }
 
+  /*
   parseConfig(config: string) {
     //voorlopig hardgecodeerd
     this.config = {
@@ -22,6 +23,7 @@ export class mySource extends Source {
       "environment": "gent_langemunt"
     }
   }
+  */
 
   async getPage(id: any): Promise<Page> {
     //this.makeObservation kon ik niet oproepen vanuit r.on('readable');

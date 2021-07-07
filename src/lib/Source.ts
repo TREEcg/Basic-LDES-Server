@@ -13,10 +13,25 @@ import { DatabaseFactory } from '../models/DatabaseFactory';
 export abstract class Source implements ISource {
 
     private databaseModel;
+    private useImportPages: boolean = false;
+    protected config: object;
 
-    constructor() {
-        let db = new DatabaseFactory();
-        this.databaseModel = db.createTable("testTable/abc")
+    constructor(config: object) {
+        this.parseConfig(config)
+
+        // let db = new DatabaseFactory();
+        // this.databaseModel = db.createTable("testTable/abc")
+    }
+
+    private parseConfig(config: object) {
+        /*
+        this.config = {
+            "entrypoint": "https://apidg.gent.be/opendata/adlib2eventstream/v1/dmg/objecten",
+            "queryparam": "generatedAtTime"
+        }
+        */
+       console.log(config)
+       this.config = config
     }
 
     getStreamIfExists(): Readable|boolean {
@@ -61,6 +76,14 @@ export abstract class Source implements ISource {
         });
 
         return new Page(triples, metadata);
+    }
+
+    public usesImportPages(): boolean {
+        return (this.config['usesImportPages'] != null && this.config['usesImportPages'])
+    }
+
+    public setDatabaseModel(databaseModel): void {
+        this.databaseModel = databaseModel;
     }
 
 }

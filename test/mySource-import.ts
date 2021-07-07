@@ -8,19 +8,21 @@ import * as f from "@dexagod/rdf-retrieval"
 const rdfParser = require("rdf-parse").default;
 
 export class mySource extends Source {
-    private config: object;
+    //private config: object;
 
-    constructor(config: string) {
-        super();
-        this.parseConfig(config);
+    constructor(config: object) {
+        super(config);
+        //this.parseConfig(config);
     }
 
+    /*
     parseConfig(config: string) {
         this.config = {
             "entrypoint": "https://apidg.gent.be/opendata/adlib2eventstream/v1/dmg/objecten",
             "queryparam": "generatedAtTime"
         }
     }
+    */
 
     /*
     async getPage(id: any): Promise<Page> {

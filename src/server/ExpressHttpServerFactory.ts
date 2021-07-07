@@ -24,12 +24,24 @@ export class ExpressHttpServerFactory {
     public start(): any {
         console.log("Starting on port: " + this.variableParams.port)
 
+        this.sourceMap.forEach(source => {
+            //console.log(source.usesImportPages())
+            if (source.usesImportPages()) {
+                const interval = setInterval(() => {
+                    source.importPages(null);
+                }, 5000);
+            }
+        })
+
         /*
         const interval = setInterval(() => {
             this.source.importPages(null);
         }, 5000);
         */
         //clearInterval(interval);
+
+        //console.log("sourceMap:", this.sourceMap)
+        //console.log("map:", this.variableParams)
         return app.listen(this.variableParams.port);
 
     }

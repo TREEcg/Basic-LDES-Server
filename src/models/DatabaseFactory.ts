@@ -3,10 +3,10 @@ import { Sequelize, DataTypes } from 'sequelize';
 export class DatabaseFactory {
     private db: Sequelize;
 
-    constructor() {
+    constructor(host: string) {
         this.db = new Sequelize({
             dialect: 'sqlite',
-            storage: 'C:/GitHub/Basic-LDES-Server/test/database.sqlite'
+            storage: host
             //storage: ':memory:'
             //storage: 'path/to/database.sqlite'
         });
