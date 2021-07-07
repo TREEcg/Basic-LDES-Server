@@ -4,11 +4,6 @@ import { Readable } from 'stream';
 
 import type * as RDF from 'rdf-js';
 import { literal, namedNode, quad } from '@rdfjs/data-model';
-import { DatabaseFactory } from '../models/DatabaseFactory';
-
-// Database
-//const db = require('../config/database')
-//const DatabaseModel = require('../models/DatabaseModel')
 
 export abstract class Source implements ISource {
 
@@ -18,18 +13,9 @@ export abstract class Source implements ISource {
 
     constructor(config: object) {
         this.parseConfig(config)
-
-        // let db = new DatabaseFactory();
-        // this.databaseModel = db.createTable("testTable/abc")
     }
 
     private parseConfig(config: object) {
-        /*
-        this.config = {
-            "entrypoint": "https://apidg.gent.be/opendata/adlib2eventstream/v1/dmg/objecten",
-            "queryparam": "generatedAtTime"
-        }
-        */
        console.log(config)
        this.config = config
     }
