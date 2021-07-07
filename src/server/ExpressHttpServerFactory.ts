@@ -9,8 +9,10 @@ import { usePageOfSource } from '../controllers/PageController';
 
 export class ExpressHttpServerFactory {
     private readonly variableParams: any;
-    private readonly source: any;
+    //private readonly source: any;
+    private readonly sources: Map<String, Source>;
 
+    /*
     constructor (source: Source, variableParams: any = { port: 3000 }) {
         this.source = source;
         this.variableParams = variableParams;
@@ -20,13 +22,26 @@ export class ExpressHttpServerFactory {
         app.get('/:id', usePageOfSource);
 
     }
+    */
+
+    constructor (sourceMap: Map<String, Source>, variableParams: any = { port: 3000 }) {
+        this.sources = sourceMap;
+        this.variableParams = variableParams;
+        app.set('sources', sourceMap);
+
+        app.use(this.decideWhichSource);
+        app.get('/*/:id', usePageOfSource);
+
+    }
+
     public start(): any {
         console.log("Starting on port: "+ this.variableParams.port)
         return app.listen(this.variableParams.port);
     }
 
     public decideWhichSource(req, res, next) {
-        res.locals.source = app.get('source');
+        //res.locals.source = app.get('source');
+        res.locals.sources = app.get('sources');
         next();
     }
 }
