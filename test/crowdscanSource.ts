@@ -40,10 +40,10 @@ export class mySource extends Source {
       makeObservation(ans);
     });
 
-    let metadata: RDF.Quad[] = [];
-    this.getMetaData(metadata);
+    let triples: RDF.Quad[] = [];
+    this.getFeatures(triples);
 
-    const p = new Page(metadata, []);
+    const p = new Page([], triples);
     return p;
   }
 
@@ -71,14 +71,14 @@ export class mySource extends Source {
     return r;
   }
 
-  private getMetaData(metadata: RDF.Quad[]): void {
+  private getFeatures(triples: RDF.Quad[]): void {
     //geen idee hoe ik hier prefixen moet toevoegen so let's just not
     //voor elke source is er andere metadata
 
     let environment = this.config['environment'];
     let aantal: number = this.config['sensors'];
     //feature of Interest
-    metadata.push(
+    triples.push(
       quad(
         namedNode('https://production.crowdscan.be/dataapi/gent/environments/' + environment),
         namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
@@ -87,14 +87,14 @@ export class mySource extends Source {
     );
 
     //observable property
-    metadata.push(
+    triples.push(
       quad(
         namedNode('hoeveelheid_mensen'),
         namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
         namedNode('http://www.w3.org/ns/sosa/ObservableProperty')
       )
     );
-    metadata.push(
+    triples.push(
       quad(
         namedNode('hoeveelheid_mensen'),
         namedNode('http://www.w3.org/2000/01/rdf-schema#label'),
@@ -102,7 +102,7 @@ export class mySource extends Source {
       )
     );
     //platform
-    metadata.push(
+    triples.push(
       quad(
         namedNode(environment + '_platform'),
         namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
@@ -110,7 +110,7 @@ export class mySource extends Source {
       )
     );
     for (let i = 1; i <= aantal; i++) {
-      metadata.push(
+      triples.push(
         quad(
           namedNode('https://production.crowdscan.be/dataapi/gent/environments/' + environment),
           namedNode('http://www.w3.org/ns/sosa/hasSample'),
@@ -121,7 +121,7 @@ export class mySource extends Source {
 
     //samples aanmaken
     for (let i = 1; i <= aantal; i++) {
-      metadata.push(
+      triples.push(
         quad(
           namedNode(environment + i + '_sample'),
           namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
@@ -129,7 +129,7 @@ export class mySource extends Source {
         )
       );
 
-      metadata.push(
+      triples.push(
         quad(
           namedNode(environment + i + '_sample'),
           namedNode('http://www.w3.org/ns/sosa/isSampleOf'),
@@ -137,7 +137,7 @@ export class mySource extends Source {
         )
       );
 
-      metadata.push(
+      triples.push(
         quad(
           namedNode(environment + i + '_sample'),
           namedNode('http://www.w3.org/2000/01/rdf-schema#comment'),
@@ -147,7 +147,7 @@ export class mySource extends Source {
     }
     for (let i = 1; i <= aantal; i++) {
 
-      metadata.push(
+      triples.push(
         quad(
           namedNode(environment + '_platfom'),
           namedNode('http://www.w3.org/ns/sosa/hosts'),
@@ -157,7 +157,7 @@ export class mySource extends Source {
     }
     //sensoren aanmaken
     for (let i = 1; i <= aantal; i++) {
-      metadata.push(
+      triples.push(
         quad(
           namedNode(environment + i + '_sensor'),//hier ga ik gewoon een cijfer achter zetten
           namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
@@ -165,20 +165,29 @@ export class mySource extends Source {
         )
       );
 
-      metadata.push(
+      triples.push(
         quad(
           namedNode(environment + i + '_sensor'),
           namedNode('http://www.w3.org/ns/sosa/isHostedBy'),
           namedNode(environment + '_platform')
         )
       );
+
+      //LDES
+      triples.push(
+        quad(
+          namedNode('https://production.crowdscan.be/dataapi/gent/environments/eventStream'),
+          namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
+          namedNode('https://w3id.org/ldes#EventStream')
+        )
+      );
+
     }
   }
-  //???LDES of nog niet van toepassing (ik denk van wel)
 
-
-  makeObservation(data: string): void {
-    let rdf: RDF.Quad;
+  makeObservation(data: string): RDF.Quad[] {
+    let rdf: RDF.Quad[];
+    rdf = [];
 
     let inhoud = JSON.parse(data);
     let header = inhoud["header"];
@@ -193,71 +202,92 @@ export class mySource extends Source {
     let tijd1: Date = new Date(tijdInNumbers - timedelta * 60000);
 
     let writer = new N3.Writer();
-    function makeSingleObservation(writer, headCount, suffix, time, timedelta, environment) {
-      writer.addQuad(
-        namedNode('observation'),
-        namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
-        namedNode('http://www.w3.org/ns/sosa/Observation')
+    function makeSingleObservation(writer, headCount, suffix, time, environment) {
+      rdf.push(
+        quad(
+          namedNode('https://production.crowdscan.be/dataapi/gent/environments/evenstream'),
+          namedNode('https://w3id.org/tree#member'),
+          namedNode('observation')//+observation.id)
+        )
+      );
+      rdf.push(
+        quad(
+          namedNode('observation'),
+          namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
+          namedNode('http://www.w3.org/ns/sosa/Observation')
+        )
       );
 
-      writer.addQuad(
-        namedNode('observation'),
-        namedNode('http://www.w3.org/ns/sosa/hasFeatureOfInterest'),
-        namedNode('https://production.crowdscan.be/dataapi/gent/environments/' + environment)
+      rdf.push(
+        quad(
+          namedNode('observation'),
+          namedNode('http://www.w3.org/ns/sosa/hasFeatureOfInterest'),
+          namedNode('https://production.crowdscan.be/dataapi/gent/environments/' + environment)
+        )
       );
 
-      writer.addQuad(
-        namedNode('observation'),
-        namedNode('http://www.w3.org/ns/sosa/observedProperty'),
-        namedNode('hoeveelheid_mensen')
+      rdf.push(
+        quad(
+          namedNode('observation'),
+          namedNode('http://www.w3.org/ns/sosa/observedProperty'),
+          namedNode('hoeveelheid_mensen')
+        )
       );
 
-      writer.addQuad(
-        namedNode('observation'),
-        namedNode('http://www.w3.org/ns/sosa/resultTime'),
-        literal(time)  //hoe ^^xsd:dateTime? -> niet automatisch?
+      rdf.push(
+        quad(
+          namedNode('observation'),
+          namedNode('http://www.w3.org/ns/sosa/resultTime'),
+          literal(time)  //hoe ^^xsd:dateTime? -> niet automatisch?
+        )
       );
 
-      writer.addQuad(
-        namedNode('observation'),
-        namedNode('http://www.w3.org/ns/sosa/hasSimpleResult'),
-        literal(headCount)  //hoe ^^xsd:double -> automatisch
+      rdf.push(
+        quad(
+          namedNode('observation'),
+          namedNode('http://www.w3.org/ns/sosa/hasSimpleResult'),
+          literal(headCount)  //hoe ^^xsd:double -> automatisch
+        )
       );
 
-      writer.addQuad(
-        namedNode('observation'),
-        namedNode('http://www.w3.org/ns/sosa/phenomenonTime'),
-        writer.blank([
-          {
-            predicate: namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
-            object: namedNode('http://www.w3.org/2006/time#Interval')
-          }, {
-            predicate: namedNode('http://www.w3.org/2006/time#hasBeginning'),
-            object: writer.blank([{
+      rdf.push(
+        quad(
+          namedNode('observation'),
+          namedNode('http://www.w3.org/ns/sosa/phenomenonTime'),
+          writer.blank([
+            {
               predicate: namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
-              object: namedNode('http://www.w3.org/2006/time#Instant')
+              object: namedNode('http://www.w3.org/2006/time#Interval')
             }, {
-              predicate: namedNode('http://www.w3.org/2006/time#inXSDDateTimeStamp'),
-              object: literal(tijd1.toString())
-            }])
-          },
-          {
-            predicate: namedNode('http://www.w3.org/2006/time#hasEnd'),
-            object: writer.blank([{
-              predicate: namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
-              object: namedNode('http://www.w3.org/2006/time#Instant')
-            }, {
-              predicate: namedNode('http://www.w3.org/2006/time#inXSDDateTimeStamp'),
-              object: literal(time)
-            }])
-          }
-        ])
+              predicate: namedNode('http://www.w3.org/2006/time#hasBeginning'),
+              object: writer.blank([{
+                predicate: namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
+                object: namedNode('http://www.w3.org/2006/time#Instant')
+              }, {
+                predicate: namedNode('http://www.w3.org/2006/time#inXSDDateTimeStamp'),
+                object: literal(tijd1.toString())
+              }])
+            },
+            {
+              predicate: namedNode('http://www.w3.org/2006/time#hasEnd'),
+              object: writer.blank([{
+                predicate: namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
+                object: namedNode('http://www.w3.org/2006/time#Instant')
+              }, {
+                predicate: namedNode('http://www.w3.org/2006/time#inXSDDateTimeStamp'),
+                object: literal(time)
+              }])
+            }
+          ])
+        )
       );
 
-      writer.addQuad(
-        namedNode('observation'),
-        namedNode('http://www.w3.org/ns/sosa/madeBySensor'),
-        namedNode(environment + suffix + '_sensor')
+      rdf.push(
+        quad(
+          namedNode('observation'),
+          namedNode('http://www.w3.org/ns/sosa/madeBySensor'),
+          namedNode(environment + suffix + '_sensor')
+        )
       );
     }
 
@@ -265,26 +295,15 @@ export class mySource extends Source {
       console.error("crowdscan api werkt niet goed");
     } else {
       if (payload.length == 1) {
-        makeSingleObservation(writer, payload[0], 0, time, timedelta, environment);
+        makeSingleObservation(writer, payload[0], 0, time, environment);
       } else {
         for (let i = 1; i < payload.length; i++) {
-          makeSingleObservation(writer, payload[i], i, time, timedelta, environment);
+          makeSingleObservation(writer, payload[i], i, time, environment);
         }
       }
     }
+    console.log(rdf);
+    return rdf;
 
-    try {
-      writer.end((error, result: RDF.Quad) => {
-        if (error) {
-          console.log("er is een error: ", error);
-        } else {
-          rdf = result;
-        }
-
-      });
-    } catch (e) {
-      console.log("er is een grote error: ", e.message);
-    }
-    //console.log(rdf);
   }
 }
