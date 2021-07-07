@@ -8,25 +8,10 @@ import * as f from "@dexagod/rdf-retrieval"
 const rdfParser = require("rdf-parse").default;
 
 export class mySource extends Source {
-    //private config: object;
 
     constructor (config: object) {
         super(config);
-        //this.parseConfig(config);
     }
-
-    /*
-    private parseConfig(config: object) {
-
-        // this.config = {
-        //     "entrypoint": "https://apidg.gent.be/opendata/adlib2eventstream/v1/dmg/objecten",
-        //     "queryparam": "generatedAtTime"
-        // }
-
-       console.log(config)
-       //this.config = config
-    }
-    */
 
     async getPage(id: any): Promise<Page> {
         // TODO: fetch API
@@ -45,14 +30,6 @@ export class mySource extends Source {
 
         let triples: RDF.Quad[] = await f.quadStreamToQuadArray(r)
 
-        /*
-        const test = quad(namedNode('http://example.org/A'), namedNode('http://example.org/B'), namedNode('http://example.org/C'));
-        const testArray : RDF.Quad[] = [];
-        testArray.push(test);
-
-        const p = new Page(testArray, []);
-        */
-
         const p = new Page(triples, []);
         return p;
     }
@@ -61,7 +38,6 @@ export class mySource extends Source {
     async fetchAPI(reqUrl: String) {
         return await fetch(reqUrl)
             .then(res => res.text())
-            //.then(body => console.log(body));
     }
     
 
