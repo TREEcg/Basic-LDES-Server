@@ -15,10 +15,12 @@ export abstract class Source implements ISource {
     }
 
     async getPage(id: any): Promise<Page> {
-        let response = await DatabaseModel.findByPk(1, {
-            rejectOnEmpty: true,
+        let response = await DatabaseModel.findByPk(id, {
+            //rejectOnEmpty: true,
         });
-
+        if (response == null) {
+            return new Page([], []);
+        }
         let parsed = JSON.parse(response.page);
         let page_ = this.deserializePage(parsed);
 
@@ -45,8 +47,11 @@ export abstract class Source implements ISource {
         json['triples'].forEach(quad_ => {
             triples.push(quad(namedNode(quad_['subject']['value']), namedNode(quad_['predicate']['value']), namedNode(quad_['object']['value'])))
         });
-        
-        return new Page(triples, null);
+        json['metadata'].forEach(quad_ => {
+            metadata.push(quad(namedNode(quad_['subject']['value']), namedNode(quad_['predicate']['value']), namedNode(quad_['object']['value'])))
+        });
+
+        return new Page(triples, metadata);
     }
 
 }
