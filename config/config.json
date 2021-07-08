@@ -23,6 +23,7 @@
             "route": "/import",
             "sourceFile": "dist/test/mySource-import",
             "usesImportPages": true,
+            "importInterval": 5000,
             "entrypoint": "https://apidg.gent.be/opendata/adlib2eventstream/v1/dmg/objecten",
             "queryparam": "generatedAtTime"
         }
