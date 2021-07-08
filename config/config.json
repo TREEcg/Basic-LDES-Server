@@ -8,6 +8,12 @@
     "sources" : [
         {
             "route": "/telraam",
+            "sourceFile": "dist/test/telraamSource",
+            "entrypoint": "https://apidg.gent.be/opendata/adlib2eventstream/v1/dmg/objecten",
+            "queryparam": "generatedAtTime"
+        },
+        {
+            "route": "/ldes-replication",
             "sourceFile": "dist/test/mySource",
             "entrypoint": "https://apidg.gent.be/opendata/adlib2eventstream/v1/dmg/objecten",
             "queryparam": "generatedAtTime"
