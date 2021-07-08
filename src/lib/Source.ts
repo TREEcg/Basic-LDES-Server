@@ -36,7 +36,18 @@ export abstract class Source implements ISource {
         return page_
     }
 
-    async importPages(pages: Page[]): Promise<void> {
+    async importPages(pages: Page[] | Map<string, Page>): Promise<void> {
+        if (Array.isArray(pages)) {
+            console.log("Without index")
+            this.importPagesWithoutIndex(pages);
+        }
+        else if (pages instanceof Map) {
+            console.log("With index")
+            this.importPagesWithIndex(pages);
+        }     
+    }
+
+    private async importPagesWithoutIndex(pages: Page[]): Promise<void> {
         let amount = await this.databaseModel.count();
         pages.forEach(async page => {
             let pageJSON = JSON.stringify(page)
@@ -46,6 +57,14 @@ export abstract class Source implements ISource {
 
             await this.databaseModel.create({ id: id, page: pageJSON });
         });
+    }
+
+    private async importPagesWithIndex(pages: Map<string, Page>): Promise<void> {
+        for (const [id, page] of pages.entries()) {
+            let pageJSON = JSON.stringify(page)
+
+            await this.databaseModel.create({ id: id, page: pageJSON });
+        };
     }
 
     private deserializePage(json: object): Page {

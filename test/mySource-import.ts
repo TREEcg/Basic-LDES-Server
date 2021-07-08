@@ -5,10 +5,12 @@ import { literal, namedNode, quad } from '@rdfjs/data-model';
 
 const fetch = require('node-fetch');
 import * as f from "@dexagod/rdf-retrieval"
+import { number } from "yargs";
 const rdfParser = require("rdf-parse").default;
 
 export class mySource extends Source {
 
+    private lastIndex: number = 0;
     constructor(config: object) {
         super(config);
     }
@@ -50,7 +52,9 @@ export class mySource extends Source {
             .then(res => res.text())
     }
 
+    /*
 
+    // Example without index
     async importPages(pages: Page[]): Promise<void> {
         let reqUrl = this.config["entrypoint"] + "?" + this.config["queryparam"] + "=" + "2021-06-28T14:26:43.196Z";
         let res = await this.fetchAPI(reqUrl);
@@ -67,6 +71,28 @@ export class mySource extends Source {
         let array: Page[] = [p, p];
 
         super.importPages(array);
+    }
+    */
+
+    // Example with indexex
+    async importPages(pages: Map<string, Page>): Promise<void> {
+        let reqUrl = this.config["entrypoint"] + "?" + this.config["queryparam"] + "=" + "2021-06-28T14:26:43.196Z";
+        let res = await this.fetchAPI(reqUrl);
+
+        const textStream = require('streamify-string')(res);
+
+        let r = await rdfParser.parse(textStream, { contentType: 'application/ld+json', baseIRI: this.config["entrypoint"] })
+            .on('error', (error: any) => console.error(error))
+
+        let triples: RDF.Quad[] = await f.quadStreamToQuadArray(r)
+
+        const p = new Page(triples, []);
+
+        let map: Map<string, Page> = new Map();
+        map.set(this.lastIndex.toString(), p);
+        this.lastIndex++;
+
+        super.importPages(map);
     }
 
 }
