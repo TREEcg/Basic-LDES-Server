@@ -29,7 +29,7 @@ export class ExpressHttpServerFactory {
             if (source.usesImportPages()) {
                 const interval = setInterval(() => {
                     source.importPages(null);
-                }, 5000);
+                }, source.getImportInterval());
             }
         })
 

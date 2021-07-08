@@ -15,7 +15,7 @@ export abstract class Source implements ISource {
     }
 
     private parseConfig(config: object) {
-       console.log(config)
+       //console.log(config)
        this.config = config
     }
 
@@ -48,7 +48,6 @@ export abstract class Source implements ISource {
         });
     }
 
-
     private deserializePage(json: object): Page {
         let triples: RDF.Quad[] = [];
         let metadata: RDF.Quad[] = [];
@@ -65,6 +64,16 @@ export abstract class Source implements ISource {
 
     public usesImportPages(): boolean {
         return (this.config['usesImportPages'] != null && this.config['usesImportPages'])
+    }
+
+    public getImportInterval(): number {
+        if (this.config['importInterval'] != null) {
+            return this.config['importInterval']
+        }
+        else {
+            throw new Error('parameter "importInterval" not present in config.json');
+        }
+        
     }
 
     public setDatabaseModel(databaseModel): void {
