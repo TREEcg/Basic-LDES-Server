@@ -1,6 +1,26 @@
 {
   "name": "basic-bdes-server",
   "version": "0.0.1",
+  "description": "Implement the Source class to generate a 1 dim paginated Linked Data Event Stream from your dataset",
+  "contributors": [
+    "Brecht Van de Vyvere <brecht.vandevyvere@ugent.be>",
+    "Kasper Zutterman <kasperzutterman1999@gmail.com> (https://www.kasperzutterman.com/)",
+    "Lucas Derveaux <ljdrveau.derveaux@ugent.be>"
+  ],
+  "license": "MIT",
+  "repository": "git@github.com:TREEcg/Basic-LDES-Server.git",
+  "bugs": {
+    "url": "https://github.com/TREEcg/Basic-LDES-Server/issues"
+  },
+  "homepage": "https://github.com/TREEcg/Basic-LDES-Server#readme",
+  "main": "dist/src/index.js",
+  "scripts": {
+    "dev": "nodemon --config nodemon.json --exec yarn start",
+    "start": "yarn run build && node ./bin/server.js",
+    "clean": "rm -rf dist",
+    "build": "yarn run clean && tsc",
+    "publish": "yarn run build && npm publish"
+  },
   "dependencies": {
     "express": "^4.17.1",
     "node-fetch": "^2.6.1",
@@ -9,14 +29,6 @@
     "sqlite3": "^5.0.2",
     "streamify-string": "^1.0.1",
     "typescript": "^4.0.5"
-  },
-  "main": "dist/src/index.js",
-  "scripts": {
-    "dev": "nodemon --config nodemon.json --exec yarn start",
-    "start": "yarn run build && node ./bin/server.js",
-    "clean": "rm -rf dist",
-    "build": "yarn run clean && tsc",
-    "publish": "yarn run build && npm publish"
   },
   "devDependencies": {
     "@dexagod/rdf-retrieval": "^1.0.2",
