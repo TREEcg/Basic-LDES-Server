@@ -3,31 +3,31 @@
         "port": 3000
     },
     "db": {
-        "host": "C:/GitHub/Basic-LDES-Server/test/database.sqlite"
+        "host": "C:/GitHub/Basic-LDES-Server/sources/database.sqlite"
     },
     "sources" : [
         {
             "route": "/telraam",
-            "sourceFile": "dist/test/telraamSource",
+            "sourceFile": "dist/sources/telraamSource",
             "entrypoint": "https://apidg.gent.be/opendata/adlib2eventstream/v1/dmg/objecten",
             "queryparam": "generatedAtTime"
         },
         {
             "route": "/ldes-replication",
-            "sourceFile": "dist/test/mySource",
+            "sourceFile": "dist/sources/mySource",
             "entrypoint": "https://apidg.gent.be/opendata/adlib2eventstream/v1/dmg/objecten",
             "queryparam": "generatedAtTime"
         },
         {
             "route": "/crowdscan",
-            "sourceFile": "dist/test/crowdscanSource",
+            "sourceFile": "dist/sources/crowdscanSource",
             "entrypoint": "https://production.crowdscan.be/dataapi/gent/gent_langemunt/data/5",
             "sensors": 3,
             "environment": "gent_langemunt"
         },
         {
             "route": "/import",
-            "sourceFile": "dist/test/mySource-import",
+            "sourceFile": "dist/sources/mySource-import",
             "usesImportPages": true,
             "importInterval": 5000,
             "entrypoint": "https://apidg.gent.be/opendata/adlib2eventstream/v1/dmg/objecten",
