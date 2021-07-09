@@ -25,7 +25,7 @@ export class AppRunner {
     protected initializeSources(config: string): Map<String, Source> {
         // should be done based on the config
         let configuration = JSON.parse(config);
-        let sourceMap : Map<String, Source> = new Map()
+        let sourceMap: Map<String, Source> = new Map()
         let db = new DatabaseFactory(configuration['db']['host']);
 
         configuration['sources'].forEach(element => {
@@ -35,13 +35,42 @@ export class AppRunner {
             //let mySource: Source = new MySource(config);
             let mySource: Source = new MySource(element);
 
-            if(element['usesImportPages'] != null && element['usesImportPages']) {
+            if (element['usesImportPages'] != null && element['usesImportPages']) {
                 mySource.setDatabaseModel(db.createTable(element['route']));
             }
             sourceMap.set(route, mySource);
         });
-        
+
         return sourceMap;
+    }
+
+    /**
+     * Generic run function for starting the server from JavaScript for a given config.
+     * @param loaderProperties - Components.js loader properties.
+     * @param configFile - Path to the server config file.
+     * @param variableParams - Variables to pass into the config file.
+     */
+    public async run(
+        configFile: string,
+        params,
+    ): Promise<void> {
+        //const app = await this.getApp(loaderProperties, configFile, variableParams);
+        //await app.start();
+
+        // Create and execute the server initializer
+        this.getApp(configFile, params)
+            .then(
+                async (app): Promise<void> => app.start(),
+                (error: Error): void => {
+                    // Instantiation of components has failed, so there is no logger to use
+                    process.stderr.write(`Error: could not instantiate server from ${configFile}\n`);
+                    process.stderr.write(`${error.stack}\n`);
+                    process.exit(1);
+                },
+            ).catch((error): void => {
+                console.error(`Could not start server: ${error}`, { error });
+                process.exit(1);
+            });
     }
 
     /**
@@ -86,7 +115,7 @@ export class AppRunner {
             .parseSync();
 
         const configFile = this.resolveFilePath(params.config, '../config/config.json');
-    
+
         // Create and execute the server initializer
         this.getApp(configFile, params)
             .then(
@@ -94,6 +123,7 @@ export class AppRunner {
                 (error: Error): void => {
                     // Instantiation of components has failed, so there is no logger to use
                     stderr.write(`Error: could not instantiate server from ${configFile}\n`);
+                    stderr.write(`Error: could not instantiate server from ${params.config}\n`);
                     stderr.write(`${error.stack}\n`);
                     process.exit(1);
                 },
