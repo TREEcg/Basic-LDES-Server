@@ -16,7 +16,7 @@
   "main": "dist/src/index.js",
   "files": [
     "bin",
-    "dist"
+    "dist/src"
   ],
   "scripts": {
     "dev": "nodemon --config nodemon.json --exec yarn start",
