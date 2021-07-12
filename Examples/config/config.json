@@ -1,14 +1,28 @@
 {
     "app": {
-        "port": 3000
+        "port": 30006
     },
     "db": {
         "host": "C:/GitHub/Basic-LDES-Server-Examples/database.sqlite"
     },
-    "sources" : [
+    "sources" : [ 
         {
             "route": "/telraam",
             "sourceFile": "dist/telraamSource",
+            "entrypoint": "https://apidg.gent.be/opendata/adlib2eventstream/v1/dmg/objecten",
+            "queryparam": "generatedAtTime"
+        },
+        {
+            "route": "/import",
+            "sourceFile": "dist/mySource-import",
+            "usesImportPages": true,
+            "importInterval": 5000,
+            "entrypoint": "https://apidg.gent.be/opendata/adlib2eventstream/v1/dmg/objecten",
+            "queryparam": "generatedAtTime"
+        },
+        {
+            "route": "/ldes-replication",
+            "sourceFile": "dist/mySource",
             "entrypoint": "https://apidg.gent.be/opendata/adlib2eventstream/v1/dmg/objecten",
             "queryparam": "generatedAtTime"
         }
