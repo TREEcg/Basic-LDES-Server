@@ -12,11 +12,13 @@ export class mySource extends Source {
 
     public observations: RDF.Quad[];
     public time: Date;
+    public parent:mySource;
 
-    constructor(config: object) {
+    constructor(config: object,parent:mySource) {
       super(config);
       this.observations = [];
       this.time = new Date();
+      this.parent = parent;
     }
 
     public async appendObservation(rdf: RDF.Quad[]): Promise<void> {
@@ -249,7 +251,7 @@ export class mySource extends Source {
       let p = new Page([], rdf);
       console.log("page is created!");
       console.log(p);
-      super.importPages([p]);
+      this.parent.createPage([p]);
     }
 
     public createHyperMedia(rdf: RDF.Quad[]): void {
@@ -312,10 +314,12 @@ export class mySource extends Source {
   }
 
   private readable: Readable;
+  private cr;
 
   constructor(config: object) {
     super(config);
     this.config = config;
+    this.cr = new this.crowdscansource(this.config,this);
     this.readable = this.createRStream();
   }
 
@@ -324,19 +328,20 @@ export class mySource extends Source {
     return this.readable;
   }
 
+  public createPage(p:Page[]){
+    super.importPages(p);
+  }
 
   public createRStream(): Readable {
     //console.log(console.log("de date is "+this.time));
     let r = new Readable();
-    let cr = new this.crowdscansource(this.config);
+    let cr = this.cr;
 
     //deze functies moet ik aan een variabele toekennnen
     //anders worden die niet opgeroepen
     let rdf: RDF.Quad[];
 
     let tijd: Date;
-
-
 
     let client = mqtt.connect(
       'mqqt://data.crowdscan.be', {
