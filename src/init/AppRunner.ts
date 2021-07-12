@@ -36,6 +36,7 @@ export class AppRunner {
             let mySource: Source = new MySource(element);
 
             if (element['usesImportPages'] != null && element['usesImportPages']) {
+                console.log("databank gemaakt voor "+element['route']);
                 mySource.setDatabaseModel(db.createTable(element['route']));
             }
             sourceMap.set(route, mySource);
