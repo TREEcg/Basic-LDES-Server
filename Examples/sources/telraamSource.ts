@@ -9,6 +9,8 @@ const fetch = require('node-fetch');
 
 export class mySource extends Source {
 
+    protected config: object;
+    
     constructor (config: object) {
         super(config);
     }
@@ -57,8 +59,9 @@ export class mySource extends Source {
     mapObservation(observation: object): RDF.Quad[] {
         let triples: RDF.Quad[] = [];
 
+        let sensorURI = this.config["entrypoint"] + observation["segment_id"];
+
         //triples.push(quad(namedNode(observation["geom"]), namedNode(observation["uptime"]), namedNode(observation["pedestrian"])))
-        
         //sensor(camera)
         triples.push(quad(namedNode(observation["segment_id"]), namedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#type'), namedNode('sosa:Sensor')))
         triples.push(quad(namedNode(observation["segment_id"]), namedNode('sosa:observes'), namedNode('uptime')))
