@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+  basic-ldes-server-docker:
+    # Path to dockerfile.
+    # '.' represents the current directory in which
+    # docker-compose.yml is present.
+    build: 
+        context: .
+        dockerfile: Dockerfile
+
+    # Mapping of container port to host
+    
+    ports:
+      - "3000:3000"
