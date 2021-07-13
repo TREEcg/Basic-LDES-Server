@@ -1,0 +1,16 @@
+{
+    "app": {
+        "port": 3000
+    },
+    "db": {
+        "host": "./database.sqlite"
+    },
+    "sources" : [ 
+        {
+            "route": "/test",
+            "sourceFile": "dist/boilerplateSource",
+            "usesImportPages": false,
+            "importInterval": 5000
+        }
+    ]
+}
