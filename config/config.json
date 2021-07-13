@@ -5,29 +5,19 @@
     "db": {
         "host": "C:/GitHub/Basic-LDES-Server/sources/database.sqlite"
     },
+    "entrypoint": "https://apidg.gent.be/opendata/adlib2eventstream/v1/dmg/objecten",
     "sources" : [
 
         {
             "route": "/ldes-replication",
-            "sourceFile": "dist/sources/mySource",
-            "entrypoint": "https://apidg.gent.be/opendata/adlib2eventstream/v1/dmg/objecten",
+            "sourceFile": "dist/sources/mySource",          
             "queryparam": "generatedAtTime"
-        },
-        {
-            "route": "/crowdscan",
-            "sourceFile": "dist/sources/crowdscanSource",
-            "entrypoint": "https://production.crowdscan.be/dataapi/gent/gent_langemunt/data/5",
-            "sensors": 1,
-            "environment": "gent_langemunt",
-            "usesImportPages":true,
-            "importInterval": 5000
         },
         {
             "route": "/import",
             "sourceFile": "dist/sources/mySource-import",
             "usesImportPages": true,
             "importInterval": 5000,
-            "entrypoint": "https://apidg.gent.be/opendata/adlib2eventstream/v1/dmg/objecten",
             "queryparam": "generatedAtTime"
         }
     ]

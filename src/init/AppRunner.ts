@@ -32,8 +32,10 @@ export class AppRunner {
             let route: String = element['route'];
             let locationOfSource = this.resolveFilePath(element['sourceFile']);
             let MySource = require(locationOfSource).mySource;
-            //let mySource: Source = new MySource(config);
-            let mySource: Source = new MySource(element);
+
+            let config = element;
+            config['entrypoint'] = configuration['entrypoint'] || 'localhost';
+            let mySource: Source = new MySource(config);
 
             if (element['usesImportPages'] != null && element['usesImportPages']) {
                 mySource.setDatabaseModel(db.createTable(element['route']));
