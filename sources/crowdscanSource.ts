@@ -23,7 +23,6 @@ export class mySource extends Source {
     }
 
     public async appendObservation(rdf: RDF.Quad[]): Promise<void> {
-      //console.log("observatie toegevoegd");
       if (this.observations.length == 0) {
         this.observations = rdf;
       } else {
@@ -143,14 +142,12 @@ export class mySource extends Source {
     }
 
     public makeObservation(data: string): RDF.Quad[] {
-      console.log("observatie gemaakt");
       let rdf: RDF.Quad[];
       rdf = [];
 
       let inhoud = JSON.parse(data);
       let payload = inhoud["payload"]["regions"];
       let tijd: Date = new Date(inhoud['header']['time']);
-      console.log(tijd);
 
       this.time = tijd;
 
@@ -224,7 +221,6 @@ export class mySource extends Source {
 
       makeSingleObservation(payload[0], 0, environment);
       this.appendObservation(rdf);
-      // console.log(rdf);
       return rdf;
 
     }
@@ -239,7 +235,6 @@ export class mySource extends Source {
       this.createHyperMedia(rdf);
       //ik denk niet dat deze await eigenlijk moet? dubbelcheck dit
       let p = new Page([], rdf);
-      console.log("page is created!");
       console.log(p);
       this.parent.createPage([p]);
     }
@@ -315,7 +310,6 @@ export class mySource extends Source {
   }
 
   public createRStream(): Readable {
-    //console.log(console.log("de date is "+this.time));
     let r = new Readable();
     let cr = this.cr;
 
@@ -335,13 +329,12 @@ export class mySource extends Source {
     );
 
     client.on('connect', () => {
-      console.log('connected');
+      console.log('connected to MQTT data broker');
     });
 
     client.subscribe('/gent/gent_langemunt');
 
     client.on('message', function (topic: string, message: string, packet: any) {
-      // console.log('message is: ' + message);
       tijd = new Date(JSON.parse(message)['header']['time']);
       rdf = cr.makeObservation(message);
 
