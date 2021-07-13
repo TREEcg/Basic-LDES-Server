@@ -17,6 +17,35 @@ yarn add @treecg/basic-ldes-server
 
 ## Usage
 
+### Running from config file
+```
+let app = require('@treecg/basic-ldes-server')
+const AppRunner = app.AppRunner;
+
+new AppRunner().run("./config/config.json");
+```
+
+### Config file
+``` json
+{
+    "app": {
+        "port": 3000
+    },
+    "db": {
+        "host": "<location to sqlite db>"
+    },
+    "sources" : [ 
+        {
+            "route": "/test",
+            "sourceFile": "<relative path to compiled Source implementation in dist folder>",
+            "usesImportPages": <boolean>,
+            "importInterval": <importPages interval> //time between calls to importPages
+        },
+        ...
+    ]
+}
+```
+
 ## Boilerplate implementation
 [Boilerplate](https://github.com/TREEcg/Basic-LDES-Server/tree/main/Boilerplate)
 
