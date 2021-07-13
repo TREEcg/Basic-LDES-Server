@@ -6,6 +6,7 @@
         "host": "C:/GitHub/Basic-LDES-Server/sources/database.sqlite"
     },
     "sources" : [
+
         {
             "route": "/ldes-replication",
             "sourceFile": "dist/sources/mySource",
@@ -16,8 +17,10 @@
             "route": "/crowdscan",
             "sourceFile": "dist/sources/crowdscanSource",
             "entrypoint": "https://production.crowdscan.be/dataapi/gent/gent_langemunt/data/5",
-            "sensors": 3,
-            "environment": "gent_langemunt"
+            "sensors": 1,
+            "environment": "gent_langemunt",
+            "usesImportPages":true,
+            "importInterval": 5000
         },
         {
             "route": "/import",
