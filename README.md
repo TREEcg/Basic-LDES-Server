@@ -4,16 +4,34 @@ A Basic LDES is a 1 dimensional pagination of an event stream’s full history a
 
 A Linked Data Event Stream (LDES) is a collection of immutable objects. The HTTP interface adheres to the [LDES specification](https://w3id.org/ldes/specification) by SEMIC. An LDES can be fragmented in different ways using the [TREE specification](https://w3id.org/tree/specification). Check the [TREE Linked Data Fragments website](https://tree.linkeddatafragments.org) for more background and implementations.
 
+## Installation
+### npm
+```
+npm i @treecg/basic-ldes-server
+```
 
-## Installing and using
-###### Installing
+### yarn
+```
+yarn add @treecg/basic-ldes-server
+```
+
+## Usage
+
+## Boilerplate implementation
+[Boilerplate](https://github.com/TREEcg/Basic-LDES-Server/tree/main/Boilerplate)
+
+## Examples
+[Examples](https://github.com/TREEcg/Basic-LDES-Server/tree/main/Examples)
+
+## Development
 ```
 git clone https://github.com/TREEcg/Basic-LDES-Server.git 
 yarn install
 yarn run dev
 ```
-###### Using
 
 ## Authors
-
-...
+- [Brecht Van de Vyvere](https://github.com/brechtvdv)
+- [Kasper Zutterman](https://github.com/KasperZutterman)
+- [Lucas Derveaux](https://github.com/lucasderveaux)
+- [Pieter Colpaert](https://github.com/pietercolpaert)
