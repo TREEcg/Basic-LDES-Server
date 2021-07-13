@@ -3,6 +3,7 @@ import { Page } from "./Page";
 import { Readable } from 'stream';
 
 import type * as RDF from 'rdf-js';
+import * as RdfString from "rdf-string";
 import { literal, namedNode, quad } from '@rdfjs/data-model';
 
 export abstract class Source implements ISource {
@@ -49,7 +50,7 @@ export abstract class Source implements ISource {
     private async importPagesWithoutIndex(pages: Page[]): Promise<void> {
         let amount = await this.databaseModel.count();
         pages.forEach(async page => {
-            let pageJSON = JSON.stringify(page)
+            let pageJSON = JSON.stringify(page.serialize())
 
             let id = (amount + 1).toString();
             amount++;
@@ -60,7 +61,7 @@ export abstract class Source implements ISource {
 
     private async importPagesWithIndex(pages: Map<string, Page>): Promise<void> {
         for (const [id, page] of pages.entries()) {
-            let pageJSON = JSON.stringify(page)
+            let pageJSON = JSON.stringify(page.serialize())
 
             await this.databaseModel.create({ id: id, page: pageJSON });
         };
@@ -71,10 +72,12 @@ export abstract class Source implements ISource {
         let metadata: RDF.Quad[] = [];
 
         json['triples'].forEach(quad_ => {
-            triples.push(quad(namedNode(quad_['subject']['value']), namedNode(quad_['predicate']['value']), namedNode(quad_['object']['value'])))
+            triples.push(RdfString.stringQuadToQuad(quad_))
+            //triples.push(quad(namedNode(quad_['subject']['value']), namedNode(quad_['predicate']['value']), namedNode(quad_['object']['value'])))
         });
         json['metadata'].forEach(quad_ => {
-            metadata.push(quad(namedNode(quad_['subject']['value']), namedNode(quad_['predicate']['value']), namedNode(quad_['object']['value'])))
+            metadata.push(RdfString.stringQuadToQuad(quad_))
+            //metadata.push(quad(namedNode(quad_['subject']['value']), namedNode(quad_['predicate']['value']), namedNode(quad_['object']['value'])))
         });
 
         return new Page(triples, metadata);

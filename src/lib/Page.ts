@@ -1,5 +1,6 @@
 import { IPage } from '../util/Util';
 import type * as RDF from 'rdf-js';
+import * as RdfString from "rdf-string";
 import rdfSerializer from "rdf-serialize";
 import * as f from "@dexagod/rdf-retrieval"
 
@@ -29,5 +30,17 @@ export class Page implements IPage {
         const tripleStream : RDF.Stream<RDF.Quad> = await f.quadArrayToQuadStream(all);
 
         return rdfSerializer.serialize(tripleStream, {contentType: contentType});
+    }
+
+    public serialize(): object {
+        let serialized: object = {}
+        let triples = []
+        let metadata = []
+
+        this.triples.forEach(triple => {triples.push(RdfString.quadToStringQuad(triple))})
+        serialized['triples'] = triples;
+        this.metadata.forEach(metadata_quad => {metadata.push(RdfString.quadToStringQuad(metadata_quad))})
+        serialized['metadata'] = metadata;
+        return serialized;
     }
 }
