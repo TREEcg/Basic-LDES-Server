@@ -11,8 +11,8 @@
   "author": "Kasper Zutterman",
   "license": "MIT",
   "scripts": {
-    "start": "yarn run build && node ./index.js",
+    "start": "npm run build && node ./index.js",
     "clean": "rm -rf dist",
-    "build": "yarn run clean && tsc"
+    "build": "npm run clean && tsc"
   }
 }
