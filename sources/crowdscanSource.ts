@@ -322,7 +322,7 @@ export class mySource extends Source {
     let client = mqtt.connect(
       'mqqt://data.crowdscan.be', {
       username: 'opendata',
-      password: 'Tvu2yMCbBW2PzKVn'
+
     }, (err: any) => {
       if (err) console.log("er is een error" + err.message);
     }
