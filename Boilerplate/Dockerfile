@@ -4,12 +4,7 @@ FROM node:12-alpine
 WORKDIR /app
 
 # Install app dependencies
-#COPY ["package.json", "tsconfig.json"] /app
-
-#RUN npm install -g 
-#-s --no-progress yarn
-
-COPY package.json /app
+COPY package*.json /app
 
 RUN npm install
 
@@ -18,6 +13,4 @@ COPY . /app
 
 EXPOSE 3000
 
-#CMD ["node", "./index.js"]
-#CMD [ "yarn", "start" ]
 ENTRYPOINT npm run start
