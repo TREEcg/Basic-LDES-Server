@@ -4,7 +4,9 @@
         ".git",
         "node_modules/",
         "dist/",
-        "coverage/"
+        "coverage/",
+        "Examples/",
+        "Boilerplate/"
     ],
     "watch": [
         "./**/*"
