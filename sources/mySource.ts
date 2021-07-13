@@ -9,6 +9,8 @@ const rdfParser = require("rdf-parse").default;
 
 export class mySource extends Source {
 
+    protected config: object;
+    
     constructor (config: object) {
         super(config);
     }
