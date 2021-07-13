@@ -34,9 +34,10 @@ new AppRunner().run("./config/config.json");
     "db": {
         "host": "<location to sqlite db>"
     },
+    "entrypoint": "https://www.example.com/"
     "sources" : [ 
         {
-            "route": "/test",
+            "route": "/endpoint-route", //relative endpoint route
             "sourceFile": "<relative path to compiled Source implementation in dist folder>",
             "usesImportPages": <boolean>,
             "importInterval": <importPages interval> //time between calls to importPages
