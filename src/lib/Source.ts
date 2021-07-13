@@ -15,7 +15,6 @@ export abstract class Source implements ISource {
     }
 
     private parseConfig(config: object) {
-        //console.log(config)
         this.config = config
     }
 
@@ -48,23 +47,16 @@ export abstract class Source implements ISource {
     }
 
     private async importPagesWithoutIndex(pages: Page[]): Promise<void> {
-        console.log("importPagesWithoudIndex voor "+this.config['route']);
-        let amount: number;
-        try {
-            amount = await this.databaseModel.count();
-        }catch(e){
-            console.log("eroor:"+e);
-            amount = 0;
-        }
-            pages.forEach(async page => {
-                let pageJSON = JSON.stringify(page)
+        let amount = await this.databaseModel.count();
+        pages.forEach(async page => {
+            let pageJSON = JSON.stringify(page)
 
-                let id = (amount + 1).toString();
-                amount++;
+            let id = (amount + 1).toString();
+            amount++;
 
-                await this.databaseModel.create({ id: id, page: pageJSON });
-            });
-        }
+            await this.databaseModel.create({ id: id, page: pageJSON });
+        });
+    }
 
     private async importPagesWithIndex(pages: Map<string, Page>): Promise<void> {
         for (const [id, page] of pages.entries()) {
@@ -103,9 +95,7 @@ export abstract class Source implements ISource {
     }
 
     public setDatabaseModel(databaseModel): void {
-        
         this.databaseModel = databaseModel;
-        console.log("de datbank is 'geset' voor "+this.config['route'])
     }
 
 }
