@@ -23,7 +23,7 @@
     "start": "yarn run build && node ./bin/server.js",
     "clean": "rm -rf dist",
     "build": "yarn run clean && tsc",
-    "publish": "yarn run build && npm publish"
+    "publish": "yarn run build && npm publish --access public"
   },
   "dependencies": {
     "express": "^4.17.1",
