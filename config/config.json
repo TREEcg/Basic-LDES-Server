@@ -6,7 +6,7 @@
         "host": "C:/GitHub/Basic-LDES-Server/sources/database.sqlite"
     },
     "sources" : [
-        
+
         {
             "route": "/ldes-replication",
             "sourceFile": "dist/sources/mySource",
