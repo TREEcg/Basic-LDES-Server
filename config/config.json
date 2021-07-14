@@ -19,6 +19,13 @@
             "usesImportPages": true,
             "importInterval": 5000,
             "queryparam": "generatedAtTime"
+        },
+        {
+            "route": "/import-test",
+            "sourceFile": "dist/sources/mySource-import-test",
+            "usesImportPages": true,
+            "importInterval": 5000,
+            "queryparam": "generatedAtTime"
         }
     ]
 }

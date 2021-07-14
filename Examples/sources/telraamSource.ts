@@ -59,7 +59,7 @@ export class mySource extends Source {
     mapObservation(observation: object): RDF.Quad[] {
         let triples: RDF.Quad[] = [];
 
-        let sensorURI = this.config["entrypoint"] + observation["segment_id"];
+        let sensorURI = this.config["entrypoint"] + this.config["route"] + "/" + observation["segment_id"];
 
         //triples.push(quad(namedNode(observation["geom"]), namedNode(observation["uptime"]), namedNode(observation["pedestrian"])))
         //sensor(camera)

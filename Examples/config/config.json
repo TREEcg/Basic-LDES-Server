@@ -5,11 +5,11 @@
     "db": {
         "host": "C:/GitHub/Basic-LDES-Server-Examples/database.sqlite"
     },
+    "entrypoint": "https://test.com",
     "sources" : [ 
         {
             "route": "/telraam",
             "sourceFile": "dist/telraamSource",
-            "entrypoint": "https://apidg.gent.be/opendata/adlib2eventstream/v1/dmg/objecten",
             "queryparam": "generatedAtTime"
         },
         {
