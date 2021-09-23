@@ -28,7 +28,7 @@ export abstract class Source implements ISource {
             //rejectOnEmpty: true,
         });
         if (response == null) {
-            return new Page([], []);
+            return null;
         }
         let parsed = JSON.parse(response.page);
         let page_ = this.deserializePage(parsed);
