@@ -2,7 +2,8 @@ import { Source } from "..";
 
 const express = require('express')
 const app = express()
-
+const cors = require('cors');
+app.use(cors());
 //let source: Source;
 
 import { usePageOfSource } from '../controllers/PageController';
