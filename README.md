@@ -60,6 +60,22 @@ yarn install
 yarn run dev
 ```
 
+## Publishing
+
+<details><summary>Test packaging</summary>
+<p>
+
+```
+yarn run build && npm pack
+```
+
+</p>
+</details>
+
+```
+yarn run publish
+```
+
 ## Authors
 - [Brecht Van de Vyvere](https://github.com/brechtvdv)
 - [Kasper Zutterman](https://github.com/KasperZutterman)
