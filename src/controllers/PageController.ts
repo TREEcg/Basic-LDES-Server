@@ -11,8 +11,10 @@ export async function usePageOfSource(req, res) {
         if (page == null) {
             res.status(404).send(`The page with this ID does not exist`);
         } else {
-
-            const s = await page.getSerializedPage('text/turtle');
+            const contentType = 'text/turtle'
+            const s = await page.getSerializedPage(contentType);
+            res.setHeader("Content-Type", contentType);
+            if (page.isImmutable) res.setHeader("Cache-Control", "public, max-age=31536000, immutable")
             s.pipe(res);
         }
     }
