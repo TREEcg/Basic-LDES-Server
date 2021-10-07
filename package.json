@@ -1,6 +1,6 @@
 {
   "name": "@treecg/basic-ldes-server",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Implement the Source class to generate a 1 dim paginated Linked Data Event Stream from your dataset",
   "contributors": [
     "Brecht Van de Vyvere <brecht.vandevyvere@ugent.be>",
@@ -22,7 +22,9 @@
     "dev": "nodemon --config nodemon.json --exec yarn start",
     "start": "yarn run build && node ./bin/server.js",
     "clean": "rm -rf dist",
-    "build": "yarn run clean && tsc",
+    "clean-linux": "rm -rf dist",
+    "clean-windows": "del /F /Q /s dist",
+    "build": "yarn run clean-linux && tsc",
     "publish": "yarn run build && npm publish --access public"
   },
   "dependencies": {
