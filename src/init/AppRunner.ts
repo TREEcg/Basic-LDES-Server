@@ -15,9 +15,11 @@ export class AppRunner {
      * @param configFile - Path to the server config file.
      * @param variableParams - Variables to pass into the config file.
      */
-    public async getApp(configFile: string, variableParams: any
+    public async getApp(configFile: string, variableParams : any = {}
     ): Promise<any> {
-        const config = await fs.promises.readFile(configFile, 'utf8')
+        const config = await fs.promises.readFile(configFile, 'utf8');
+        const configuration = JSON.parse(config);
+        if (!variableParams.port && configuration.app && configuration.app.port) variableParams.port = configuration.app.port;
         const sourceMap: Map<String, Source> = this.initializeSources(config);
         return this.createApp(sourceMap, variableParams);
     }
