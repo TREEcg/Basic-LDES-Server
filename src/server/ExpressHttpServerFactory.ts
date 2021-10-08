@@ -6,7 +6,7 @@ const cors = require('cors');
 app.use(cors());
 //let source: Source;
 
-import { usePageOfSource } from '../controllers/PageController';
+import { usePageOfSource, tryRedirecting } from '../controllers/PageController';
 
 export class ExpressHttpServerFactory {
     private readonly variableParams: any;
@@ -20,6 +20,7 @@ export class ExpressHttpServerFactory {
 
         app.use(this.loadSourceMap);
         app.get('/*/:id', usePageOfSource);
+        app.get('*', tryRedirecting);
     }
 
     public start(): any {
