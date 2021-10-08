@@ -28,7 +28,7 @@ export async function usePageOfSource(req, res) {
 export function tryRedirecting(req, res) {
     const sourceMap = res.locals.sourceMap;
     let path = req.params[0];
-    if (req.params.id) path = '/' + req.params[0] + req.params.id;
+    if (req.params.id) path = '/' + req.params[0] + '/' + req.params.id;
     if (sourceMap.has(path)) {
         const source = sourceMap.get(path);
         let finalEntry = 1; // default
