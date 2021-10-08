@@ -1,6 +1,6 @@
 {
   "name": "@treecg/basic-ldes-server",
-  "version": "1.1.2",
+  "version": "1.1.4",
   "description": "Implement the Source class to generate a 1 dim paginated Linked Data Event Stream from your dataset",
   "contributors": [
     "Brecht Van de Vyvere <brecht.vandevyvere@ugent.be>",
