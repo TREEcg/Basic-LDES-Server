@@ -19,16 +19,16 @@ export async function usePageOfSource(req, res) {
         }
     }
     else {
-        //console.error(`The endpoint ${path} does not exist`)
-        res.status(404).send(`The endpoint ${path} does not exist`);
+        tryRedirecting(req, res);
     }
 }
 
 // When no id has been given for an endpoint /enpoint(/:id)
 // Try to redirect to the last entry
-export async function tryRedirecting(req, res) {
+export function tryRedirecting(req, res) {
     const sourceMap = res.locals.sourceMap;
-    const path = req.params[0];
+    let path = req.params[0];
+    if (req.params.id) path = '/' + req.params[0] + req.params.id;
     if (sourceMap.has(path)) {
         const source = sourceMap.get(path);
         let finalEntry = 1; // default
