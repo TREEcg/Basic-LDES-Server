@@ -19,20 +19,23 @@ export async function usePageOfSource(req, res) {
         }
     }
     else {
-        tryRedirecting(req, res);
+        await tryRedirecting(req, res);
     }
 }
 
 // When no id has been given for an endpoint /enpoint(/:id)
 // Try to redirect to the last entry
-export function tryRedirecting(req, res) {
+export async function tryRedirecting(req, res) {
     const sourceMap = res.locals.sourceMap;
     let path = req.params[0];
     if (req.params.id) path = '/' + req.params[0] + '/' + req.params.id;
     if (sourceMap.has(path)) {
         const source = sourceMap.get(path);
         let finalEntry = 1; // default
-        if (source.getFinalEntry)  finalEntry = source.getFinalEntry();
+        if (source.getFinalEntry) {
+            const test = await source.getFinalEntry();
+            if (test != null) finalEntry = test;
+        }
 
         res.redirect(path + '/' + finalEntry)
     } else {
