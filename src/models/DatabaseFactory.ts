@@ -6,8 +6,8 @@ export class DatabaseFactory {
     constructor(host: string) {
         this.db = new Sequelize({
             dialect: 'sqlite',
-            //storage: host
-            storage: ':memory:'
+            storage: host
+            // storage: ':memory:'
             //storage: 'path/to/database.sqlite'
         });
     }
