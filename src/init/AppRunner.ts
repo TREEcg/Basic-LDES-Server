@@ -114,7 +114,7 @@ export class AppRunner {
                 baseUrl: { type: 'string', alias: 'b', requiresArg: true },
                 config: { type: 'string', alias: 'c', requiresArg: true },
                 loggingLevel: { type: 'string', alias: 'l', default: 'info', requiresArg: true },
-                port: { type: 'number', alias: 'p', default: 3000, requiresArg: true }
+                port: { type: 'number', alias: 'p', requiresArg: true }
             })
             .parseSync();
 
